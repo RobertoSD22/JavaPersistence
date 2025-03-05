@@ -3,8 +3,11 @@ package com.platzi;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class Conexion {
+
+    static Logger logger = Logger.getLogger(Conexion.class.getName());
 
     public Connection getConection() {
         Connection connection = null;
@@ -13,7 +16,7 @@ public class Conexion {
             System.out.println("Conexión exitosa");
         } catch (SQLException e) {
             System.out.println("Error al conectar a la base de datos");
-            e.printStackTrace();
+            logger.severe("Error al conectar a la base de datos: " + e);
         }
         return connection;
     }
