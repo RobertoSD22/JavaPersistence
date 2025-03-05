@@ -13,9 +13,8 @@ public class Conexion {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mensajes_app", "sislab", "password");
-            System.out.println("Conexión exitosa");
         } catch (SQLException e) {
-            System.out.println("Error al conectar a la base de datos");
+            System.err.println("Error al conectar a la base de datos");
             logger.severe("Error al conectar a la base de datos: " + e);
         }
         return connection;

@@ -5,6 +5,7 @@ import com.platzi.dao.model.Mensajes;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Objects;
 import java.util.logging.Logger;
 
@@ -39,6 +40,34 @@ public class MensajesDAO {
 
     public static void leerMensajesDB() {
 
+        Conexion claseConexion = new Conexion();
+        try(Connection connection = claseConexion.getConection()) {
+
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+
+            try {
+                String query = "SELECT * FROM mensajes";
+                ps = connection.prepareStatement(query);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    System.out.println("ID: " + rs.getInt("id_mensaje"));
+                    System.out.println("Mensaje: " + rs.getString("mensaje"));
+                    System.out.println("Autor: " + rs.getString("autor_mensaje"));
+                    System.out.println("Fecha: " + rs.getString("fecha_mensaje"));
+                    System.out.println();
+                }
+            } catch (Exception e) {
+                logger.severe("Error al leer mensajes: " + e);
+            } finally {
+                Objects.requireNonNull(rs).close();
+                Objects.requireNonNull(ps).close();
+                connection.close();
+            }
+
+        } catch (Exception e) {
+            logger.severe("Error al conectar a la base de datos: " + e);
+        }
     }
 
     public static void borrarMensajeDB(int idMensaje) {
