@@ -2,7 +2,6 @@ package com.platzi;
 
 import com.platzi.service.MensajesService;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
 public class Inicio {
@@ -10,7 +9,7 @@ public class Inicio {
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        int opcion = 0;
+        int opcion;
 
         do {
             System.out.println("----------------------------");
