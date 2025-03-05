@@ -72,6 +72,27 @@ public class MensajesDAO {
 
     public static void borrarMensajeDB(int idMensaje) {
 
+        Conexion claseConexion = new Conexion();
+        try(Connection connection = claseConexion.getConection()) {
+
+            PreparedStatement ps = null;
+            try {
+                String query = "DELETE FROM mensajes WHERE id_mensaje = ?";
+                ps = connection.prepareStatement(query);
+                ps.setInt(1, idMensaje);
+                ps.executeUpdate();
+                logger.info("Mensaje eliminado correctamente");
+            } catch (Exception e) {
+                logger.severe("Error al borrar mensaje: " + e);
+                connection.rollback();
+            } finally {
+                Objects.requireNonNull(ps).close();
+                connection.close();
+            }
+        } catch (Exception e) {
+            logger.severe("Error al conectar a la base de datos: " + e);
+
+        }
     }
 
     public static void actualizarMensajeDB(Mensajes mensaje) {
