@@ -97,5 +97,26 @@ public class MensajesDAO {
 
     public static void actualizarMensajeDB(Mensajes mensaje) {
 
+        Conexion claseConexion = new Conexion();
+        try(Connection connection = claseConexion.getConection()) {
+
+            PreparedStatement ps = null;
+            try {
+                String query = "UPDATE mensajes SET mensaje = ?, fecha_mensaje = CURRENT_TIMESTAMP WHERE id_mensaje = ?";
+                ps = connection.prepareStatement(query);
+                ps.setString(1, mensaje.getMensaje());
+                ps.setInt(2, mensaje.getIdMensaje());
+                ps.executeUpdate();
+                logger.info("Mensaje actualizado correctamente");
+            } catch (Exception e) {
+                logger.severe("Error al actualizar mensaje: " + e);
+                connection.rollback();
+            } finally {
+                Objects.requireNonNull(ps).close();
+                connection.close();
+            }
+        } catch (Exception e) {
+            logger.severe("Error al conectar a la base de datos: " + e);
+        }
     }
 }
